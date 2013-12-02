@@ -1,0 +1,12 @@
+{
+	"code": [
+		"GameCenterPlugin.h",
+		"GameCenterPlugin.mm"
+	],
+	"frameworks": [
+	],
+	"userDefined": [
+	],
+	"plist": {
+	}
+}
