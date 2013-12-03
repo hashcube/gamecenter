@@ -1,7 +1,9 @@
 {
 	"code": [
 		"GameCenterPlugin.h",
-		"GameCenterPlugin.mm"
+		"GameCenterPlugin.mm",
+		"GameCenterManager.h",
+		"GameCenterManager.mm"
 	],
 	"frameworks": [
 		"GameKit"
