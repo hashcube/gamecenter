@@ -4,6 +4,7 @@
 		"GameCenterPlugin.mm"
 	],
 	"frameworks": [
+		"GameKit"
 	],
 	"userDefined": [
 	],

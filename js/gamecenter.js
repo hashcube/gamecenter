@@ -1,6 +1,10 @@
+import util.setProperty as setProperty;
+
+var onSyncUpdate;
+
 function pluginSend(evt, params) {
 	NATIVE && NATIVE.plugins && NATIVE.plugins.sendEvent &&
-		NATIVE.plugins.sendEvent("FacebookPlugin", evt,
+		NATIVE.plugins.sendEvent("GameCenterPlugin", evt,
 				JSON.stringify(params || {}));
 }
 
@@ -32,140 +36,78 @@ function invokeCallbacks(list, clear) {
 	}
 }
 
-var Facebook = Class(function () {
-	var loginCB = [], meCB = [], friendsCB = [], fqlCB = [], ogCB = [], newCATPICB = [];
+var Gamecenter = Class(function () {
+
+	var loginCB = [];
 
 	this.init = function(opts) {
-		logger.log("{facebook} Registering for events on startup");
+		logger.log("{gamecenter} Registering for events on startup");
+		setProperty(this, "onSyncUpdate", {
+			set: function(f) {
+				//logger.log("Am seting it");
+				// If a callback is being set,
+				if (typeof f === "function") {
+					onSyncUpdate = f;
+				} else {
+					onSyncUpdate = null;
+				}
+			},
+			get: function() {
+				//logger.log("Am getting it");
+				return onSyncUpdate;
+			}
+		});
 
-		pluginOn("facebookState", function(evt) {
-			logger.log("{facebook} State updated:", evt.state);
+		pluginOn("gamecenterLogin", function(evt) {
+			logger.log("{gamecenter} State updated:", evt.state);
 
 			invokeCallbacks(loginCB, true, evt.state === "open", evt);
 		});
+	}
 
-		pluginOn("facebookError", function(evt) {
-			logger.log("{facebook} Error occurred:", evt.description);
+	this.sendAchievement = function(achievementID, percentSolved) {
+		logger.log("{gamecenter} Sending of achievement");
 
-		});
+		var param = {"achievementID":achievementID,"percentSolved":percentSolved};
 
-		pluginOn("facebookMe", function(evt) {
-			logger.log("{facebook} Got me, error=", evt.error);
+		pluginSend("sendAchievement",param);
+	}
 
-			invokeCallbacks(meCB, true, evt.error, evt.user);
-		});
+	this.sendScore = function(leaderBoardID, score) {
+		logger.log("{gamecenter} Sending of Score to leaderboard");
 
-		pluginOn("facebooknewCATPI", function(evt) {
-			logger.log("{facebook} Got CATPI, error=", evt.error);
+		var param = {"leaderBoardID":leaderBoardID,"score":score};
 
-			invokeCallbacks(newCATPICB, true, evt.error, evt.result);
-		});
+		pluginSend("sendScore",param);
+	}
 
-		pluginOn("facebookOg", function(evt) {
-			logger.log("{facebook} Got OG, error=", evt.error);
+	this.setNumber = function(name, val) {
+		return;
+	}
 
-			invokeCallbacks(ogCB, true, evt.error, evt.result);
-		});
+	this.initSync = function(param_name) {
+		return;
+	}
 
-		pluginOn("facebookFriends", function(evt) {
-			logger.log("{facebook} Got friends, error=", evt.error);
+	this.logout = function() {
+		logger.log("{gamecenter} Logging Out a user");
 
-			invokeCallbacks(friendsCB, true, evt.error, evt.friends);
-		});
-
-		pluginOn("facebookFql", function(evt) {
-			logger.log("{facebook} Got FQL, error=", evt.error);
-
-			var resultObj = evt.result;
-			var error = evt.error;
-
-			if (!error) {
-				if (typeof resultObj === "string") {
-					try {
-						resultObj = JSON.parse(resultObj);
-					} catch (e) {
-						error = "Invalid JSON";
-					}
-				}
-			}
-
-			invokeCallbacks(fqlCB, true, error, resultObj);
-		});
+		pluginSend("signOut");
 	}
 
 	this.login = function(next) {
-		logger.log("{facebook} Initiating login");
+		logger.log("{gamecenter} Logging in a user");
 
 		loginCB.push(next);
 
-		pluginSend("login");
-	};
-
-	this.newCATPIR = function(next) {
-		logger.log("{facebook} Initiating CATPIR");
-
-		newCATPICB.push(next);
-
-		pluginSend("newCATPIR");
+		pluginSend("beginUserInitiatedSignIn");
 	}
 
-	this.didBecomeActive = function() {
-		logger.log("{facebook} Handling Fast User Switching");
+	this.showLeaderBoard = function() {
+		logger.log("{gamecenter} Showing Leaderboard");
 
-		pluginSend("didBecomeActive");
-	}
-
-	this.sendRequests = function(params) {
-		logger.log("{facebook} Initiating sendRequests");
-
-		pluginSend("sendRequests", params);
-	}
-
-	this.ogCall = function(params, next) {
-		logger.log("{facebook} Initiating OpenGraph Action Call");
-
-		ogCB.push(next);
-
-		pluginSend("publishStory", params);
-	}
-
-	this.me = function(next) {
-		logger.log("{facebook} Getting me");
-
-		meCB.push(next);
-
-		pluginSend("getMe");
-	}
-
-	this.friends = function(next) {
-		logger.log("{facebook} Getting friends");
-
-		friendsCB.push(next);
-
-		pluginSend("getFriends");
-	}
-
-	this.fql = function(query, next) {
-		logger.log("{facebook} Initiating FQL");
-
-		fqlCB.push(next);
-
-		pluginSend("fql", {"query": query});
-	}
-
-	this.logout = function(next) {
-		logger.log("{facebook} Initiating logout");
-
-		pluginSend("logout");
-	};
-
-	this.loggedin = function(next) {
-		logger.log("{facebook} ");
-
-		loginCB.push(next);
-
-		pluginSend("isOpen");
+		pluginSend("showLeaderBoard");
 	}
 });
 
-exports = new Facebook();
+exports = new Gamecenter();
