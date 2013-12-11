@@ -89,7 +89,7 @@
 //
 // UIKit view controllers should only be accessed on the main thread, so the snippet above may
 // lead to subtle and hard to trace bugs.  Many solutions to this problem exist.  In this sample,
-// I'm bottlenecking everything through  "callDelegateOnMainThread" which calls "callDelegate". 
+// I'm bottlenecking everything through  "callDelegateOnMainThread" which calls "callDelegate".
 // Because "callDelegate" is the only method to access the delegate, I can ensure that delegate
 // is not visible in any of my block callbacks.
 
@@ -188,7 +188,7 @@
 				{
 					[tempCache setObject: score forKey: score.identifier];
 				}
-				self.earnedAchievementCache= tempCache;
+				self.earnedAchievementCache= tempCache;		
 				[self submitAchievement: identifier percentComplete: percentComplete];
 			}
 			else
@@ -222,9 +222,10 @@
 		if(achievement!= NULL)
 		{
 			//Submit the Achievement...
+            achievement.showsCompletionBanner = YES;
 			[achievement reportAchievementWithCompletionHandler: ^(NSError *error)
 			{
-				 [self callDelegateOnMainThread: @selector(achievementSubmitted:error:) withArg: achievement error: error];
+                //[self callDelegateOnMainThread: @selector(achievementSubmitted:error:) withArg: achievement error: error];
 			}];
 		}
 	}
