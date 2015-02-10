@@ -3,9 +3,7 @@ import util.setProperty as setProperty;
 var onSyncUpdate;
 
 function pluginSend(evt, params) {
-	NATIVE && NATIVE.plugins && NATIVE.plugins.sendEvent &&
-		NATIVE.plugins.sendEvent("GameCenterPlugin", evt,
-				JSON.stringify(params || {}));
+	NATIVE.plugins.sendEvent("GameCenterPlugin", evt,JSON.stringify(params || {}));
 }
 
 var Gamecenter = Class(function () {
