@@ -46,7 +46,12 @@
  */
 
 #import "GameCenterManager.h"
-#import <GameKit/GameKit.h>
+
+#define JSContext JSContext_GK
+#define JSType JSType_GK
+	#import <GameKit/GameKit.h>
+#undef JSContext
+#undef JSType
 
 
 
@@ -140,7 +145,7 @@
 {
 	if([GKLocalPlayer localPlayer].authenticated == NO)
 	{
-		[[GKLocalPlayer localPlayer] authenticateWithCompletionHandler:^(NSError *error) 
+		[[GKLocalPlayer localPlayer] setAuthenticateHandler:^( UIViewController *viewController, NSError *error)
 		{
 			[self callDelegateOnMainThread: @selector(processGameCenterAuth:) withArg: NULL error: error];
 		}];
