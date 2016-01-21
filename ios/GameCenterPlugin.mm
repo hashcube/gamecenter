@@ -59,7 +59,6 @@ static UIViewController* rootViewController = nil;
     }
 }
 - (void) showGameCenter: (NSDictionary *)jsonObject {
-    NSLog(@"showGameCenter has been called");
     if([GameCenterManager isGameCenterAvailable]) {
         [self.gameCenterManager showGameCenter: rootViewController];
     } else {
