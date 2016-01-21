@@ -1,7 +1,7 @@
 #import "GameCenterPlugin.h"
 #import "GameCenterManager.h"
 
-static NSArray* _leaderboards = nil;
+static UIViewController* rootViewController = nil;
 @implementation GameCenterPlugin
 
 @synthesize gameCenterManager;
@@ -22,6 +22,8 @@ static NSArray* _leaderboards = nil;
 
 
 - (void) initializeWithManifest:(NSDictionary *)manifest appDelegate:(TeaLeafAppDelegate *)appDelegate {
+
+    rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
     if([GameCenterManager isGameCenterAvailable])
     {
         self.gameCenterManager= [[GameCenterManager alloc] init];
@@ -56,32 +58,15 @@ static NSArray* _leaderboards = nil;
         [self.gameCenterManager submitAchievement: achievementID percentComplete: 100.0];
     }
 }
-
-- (void) showLeaderBoard: (NSDictionary*)opts withRequestId:(NSNumber*) requestId {
-    [GKLeaderboard loadLeaderboardsWithCompletionHandler:^(NSArray *leaderboards, NSError *error) {
-        if(error != nil) {
-            [[PluginManager get] dispatchJSResponse:nil
-                withError:@{@"message": error.localizedDescription}
-                andRequestId:requestId];
-        }
-        NSMutableArray* res = [[NSMutableArray alloc] init];
-        for (GKLeaderboard* lb in leaderboards) {
-            NSMutableDictionary *tmp = [[NSMutableDictionary alloc] init];
-            tmp[@"identifier"] = lb.identifier;
-            tmp[@"title"] = lb.title;
-            if (lb.groupIdentifier != nil) {
-                tmp[@"groupIdentifier"] = lb.groupIdentifier;
-            } else {
-                tmp[@"groupIdentifier"] = @"";
-            }
-            [res addObject:tmp];
-        }
-        _leaderboards = leaderboards;
-        [[PluginManager get] dispatchJSResponse:@{@"leaderboards":res}
-                         withError:nil
-                         andRequestId:requestId];
-    }];
+- (void) showGameCenter: (NSDictionary *)jsonObject {
+    NSLog(@"showGameCenter has been called");
+    if([GameCenterManager isGameCenterAvailable]) {
+        [self.gameCenterManager showGameCenter: rootViewController];
+    } else {
+      return;
+    }
 }
+
 - (void) sendScore:(NSDictionary *)jsonObject {
     NSString *leaderBoardID =  [NSString stringWithFormat:@""];
     NSNumber *score;

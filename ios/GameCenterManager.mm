@@ -236,6 +236,20 @@
 	}
 }
 
+(void) showGameCenter: (UIViewController*) rootViewController
+{
+    GKGameCenterViewController* gameCenterController = [[GKGameCenterViewController alloc] init];
+    if (gameCenterController != nil) {
+        gameCenterController.gameCenterDelegate = (id)self;
+        [rootViewController presentViewController:gameCenterController animated:YES completion:nil];
+    }
+}
+
+- (void) gameCenterViewControllerDidFinish:(GKGameCenterViewController *)gameCenterViewController{
+    [gameCenterViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+
 - (void) resetAchievements
 {
 	self.earnedAchievementCache= NULL;

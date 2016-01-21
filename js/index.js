@@ -61,8 +61,8 @@ var Gamecenter = Class(function () {
 		return;
 	};
 
-	this.showLeaderBoard = function(cb) {
-    pluginSend("showLeaderBoard");
+	this.showGameCenter = function(cb) {
+    pluginSend("showGameCenter");
 	};
 });
 
