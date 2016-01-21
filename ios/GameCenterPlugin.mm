@@ -1,6 +1,7 @@
 #import "GameCenterPlugin.h"
 #import "GameCenterManager.h"
 
+static NSArray* _leaderboards = nil;
 @implementation GameCenterPlugin
 
 @synthesize gameCenterManager;
@@ -57,6 +58,31 @@
     }
 }
 
+- (void) showLeaderBoard: (NSDictionary*)opts withRequestId:(NSNumber*) requestId {
+    [GKLeaderboard loadLeaderboardsWithCompletionHandler:^(NSArray *leaderboards, NSError *error) {
+        if(error != nil) {
+            [[PluginManager get] dispatchJSResponse:nil
+                withError:@{@"message": error.localizedDescription}
+                andRequestId:requestId];
+        }
+        NSMutableArray* res = [[NSMutableArray alloc] init];
+        for (GKLeaderboard* lb in leaderboards) {
+            NSMutableDictionary *tmp = [[NSMutableDictionary alloc] init];
+            tmp[@"identifier"] = lb.identifier;
+            tmp[@"title"] = lb.title;
+            if (lb.groupIdentifier != nil) {
+                tmp[@"groupIdentifier"] = lb.groupIdentifier;
+            } else {
+                tmp[@"groupIdentifier"] = @"";
+            }
+            [res addObject:tmp];
+        }
+        _leaderboards = leaderboards;
+        [[PluginManager get] dispatchJSResponse:@{@"leaderboards":res}
+                         withError:nil
+                         andRequestId:requestId];
+    }];
+}
 - (void) sendScore:(NSDictionary *)jsonObject {
     NSString *leaderBoardID =  [NSString stringWithFormat:@""];
     NSNumber *score;

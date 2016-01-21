@@ -43,27 +43,27 @@ var Gamecenter = Class(function () {
 		var param = {"leaderBoardID":leaderBoardID,"score":score};
 
 		pluginSend("sendScore",param);
-	}
+	};
 
 	this.setNumber = function(name, val) {
 		return;
-	}
+	};
 
 	this.initSync = function(param_name) {
 		return;
-	}
+	};
 
 	this.logout = function() {
 		return;
-	}
+	};
 
 	this.login = function(next) {
 		return;
-	}
+	};
 
-	this.showLeaderBoard = function() {
-		return;
-	}
+	this.showLeaderBoard = function(cb) {
+    pluginSend("showLeaderBoard");
+	};
 });
 
 exports = new Gamecenter();
