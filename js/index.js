@@ -35,7 +35,7 @@ var Gamecenter = Class(function () {
 		var param = {"achievementID":achievementID,"percentSolved":percentSolved};
 
 		pluginSend("sendAchievement",param);
-	}
+	};
 
 	this.sendScore = function(leaderBoardID, score) {
 		logger.log("{gamecenter} Sending of Score to leaderboard");
@@ -61,9 +61,9 @@ var Gamecenter = Class(function () {
 		return;
 	};
 
-  this.showGameCenter = function() {
-    pluginSend("showGameCenter");
-  };
+    this.showGameCenter = function() {
+      pluginSend("showGameCenter");
+    };
 });
 
 exports = new Gamecenter();
