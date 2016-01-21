@@ -61,9 +61,9 @@ var Gamecenter = Class(function () {
 		return;
 	};
 
-        this.showGameCenter = function() {
+       this.showGameCenter = function() {
           pluginSend("showGameCenter");
-        };
+       };
 });
 
 exports = new Gamecenter();
