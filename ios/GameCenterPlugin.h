@@ -1,6 +1,4 @@
 #import <UIKit/UIKit.h>
-#import <GameKit/GameKit.h>
-
 #import "PluginManager.h"
 
 @class GameCenterManager;

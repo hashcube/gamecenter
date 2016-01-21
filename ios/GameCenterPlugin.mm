@@ -25,7 +25,6 @@ static NSArray* _leaderboards = nil;
     if([GameCenterManager isGameCenterAvailable])
     {
         self.gameCenterManager= [[GameCenterManager alloc] init];
-        //[self.gameCenterManager setDelegate: self];
         [self.gameCenterManager authenticateLocalUser];
     }
 }
