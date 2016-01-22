@@ -26,7 +26,7 @@ static UIViewController* rootViewController = nil;
     rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
     if([GameCenterManager isGameCenterAvailable])
     {
-        self.gameCenterManager= [[GameCenterManager alloc] init];
+        self.gameCenterManager = [[GameCenterManager alloc] init];
         [self.gameCenterManager authenticateLocalUser];
     }
 }

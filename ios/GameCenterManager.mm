@@ -53,7 +53,7 @@
 #undef JSContext
 #undef JSType
 
-
+BOOL is_signedIn;
 
 @implementation GameCenterManager
 
@@ -143,13 +143,19 @@
 
 - (void) authenticateLocalUser
 {
-	if([GKLocalPlayer localPlayer].authenticated == NO)
-	{
-		[[GKLocalPlayer localPlayer] setAuthenticateHandler:^( UIViewController *viewController, NSError *error)
-		{
-			[self callDelegateOnMainThread: @selector(processGameCenterAuth:) withArg: NULL error: error];
-		}];
-	}
+    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+    localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error) {
+        if(viewController != nil) {
+            is_signedIn = false;
+            NSLog(@"Player Not authenticated");
+        } else if (localPlayer.isAuthenticated) {
+            is_signedIn = true;
+            NSLog(@"Authentication Successful");
+        } else {
+            is_signedIn = false;
+            NSLog(@"Authentication Failed. Error: %@.", error);
+        }
+    };
 }
 
 - (void) reloadHighScoresForCategory: (NSString*) category
@@ -236,12 +242,28 @@
 	}
 }
 
-(void) showGameCenter: (UIViewController*) rootViewController
+-  (void) showGameCenter: (UIViewController*) rootViewController
 {
-    GKGameCenterViewController* gameCenterController = [[GKGameCenterViewController alloc] init];
-    if (gameCenterController != nil) {
-        gameCenterController.gameCenterDelegate = (id)self;
-        [rootViewController presentViewController:gameCenterController animated:YES completion:nil];
+    if(is_signedIn) {
+        GKGameCenterViewController* gameCenterController = [[GKGameCenterViewController alloc] init];
+        if (gameCenterController != nil) {
+            gameCenterController.gameCenterDelegate = (id)self;
+            [rootViewController presentViewController:gameCenterController animated:YES completion:nil];
+        }
+    } else {
+        UIAlertView *alertView  = [[UIAlertView alloc]
+                                   initWithTitle:@"Game Center"
+                                   message:@"If Game Center is disabled try logging with Game center app"
+                                   delegate: self
+                                   cancelButtonTitle:@"Ok"
+                                   otherButtonTitles:@"Open Game Center", nil];
+        [alertView show];
+    }
+}
+
+- (void) alertView: (UIAlertView *) alertView clickedButtonAtIndex:(NSInteger) buttonIndex {
+    if(buttonIndex == 1) {
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"gamecenter:"]];
     }
 }
 
