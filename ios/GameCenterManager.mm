@@ -114,7 +114,7 @@ BOOL is_signedIn;
     }
     else
     {
-        NSLog(@"Missed Method");
+        NSLog(@"{Gamecenter} Missed Method");
     }
 }
 
@@ -144,13 +144,13 @@ BOOL is_signedIn;
     localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error) {
         if(viewController != nil) {
             is_signedIn = false;
-            NSLog(@"Player Not authenticated");
+            NSLog(@"{Gamecenter} Player Not authenticated");
         } else if (localPlayer.isAuthenticated) {
             is_signedIn = true;
-            NSLog(@"Authentication Successful");
+            NSLog(@"{Gamecenter} Authentication Successful");
         } else {
             is_signedIn = false;
-            NSLog(@"Authentication Failed. Error: %@.", error);
+            NSLog(@"{Gamecenter} Authentication Failed. Error: %@.", error);
         }
     };
 }
