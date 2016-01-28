@@ -53,7 +53,7 @@
 #undef JSContext
 #undef JSType
 
-BOOL is_signedIn;
+BOOL is_signed_in;
 
 @implementation GameCenterManager
 
@@ -143,13 +143,13 @@ BOOL is_signedIn;
     GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
     localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error) {
         if(viewController != nil) {
-            is_signedIn = false;
+            is_signed_in = false;
             NSLog(@"{Gamecenter} Player Not authenticated");
         } else if (localPlayer.isAuthenticated) {
-            is_signedIn = true;
+            is_signed_in = true;
             NSLog(@"{Gamecenter} Authentication Successful");
         } else {
-            is_signedIn = false;
+            is_signed_in = false;
             NSLog(@"{Gamecenter} Authentication Failed. Error: %@.", error);
         }
     };
@@ -239,7 +239,7 @@ BOOL is_signedIn;
 
 -  (void) showGameCenter: (UIViewController*) rootViewController
 {
-    if(is_signedIn) {
+    if(is_signed_in) {
         GKGameCenterViewController* gameCenterController = [[GKGameCenterViewController alloc] init];
         if (gameCenterController != nil) {
             gameCenterController.gameCenterDelegate = (id)self;
