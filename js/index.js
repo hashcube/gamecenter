@@ -35,7 +35,7 @@ var Gamecenter = Class(function () {
 		var param = {"achievementID":achievementID,"percentSolved":percentSolved};
 
 		pluginSend("sendAchievement",param);
-	}
+	};
 
 	this.sendScore = function(leaderBoardID, score) {
 		logger.log("{gamecenter} Sending of Score to leaderboard");
@@ -43,27 +43,27 @@ var Gamecenter = Class(function () {
 		var param = {"leaderBoardID":leaderBoardID,"score":score};
 
 		pluginSend("sendScore",param);
-	}
+	};
 
 	this.setNumber = function(name, val) {
 		return;
-	}
+	};
 
 	this.initSync = function(param_name) {
 		return;
-	}
+	};
 
 	this.logout = function() {
 		return;
-	}
+	};
 
 	this.login = function(next) {
 		return;
-	}
+	};
 
-	this.showLeaderBoard = function() {
-		return;
-	}
+       this.showGameCenter = function() {
+          pluginSend("showGameCenter");
+       };
 });
 
 exports = new Gamecenter();

@@ -85,4 +85,5 @@
 - (void) resetAchievements;
 
 - (void) mapPlayerIDtoPlayer: (NSString*) playerID;
+- (void) showGameCenter: (UIViewController*) rootViewController;
 @end

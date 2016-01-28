@@ -1,6 +1,7 @@
 #import "GameCenterPlugin.h"
 #import "GameCenterManager.h"
 
+static UIViewController* rootViewController = nil;
 @implementation GameCenterPlugin
 
 @synthesize gameCenterManager;
@@ -21,9 +22,11 @@
 
 
 - (void) initializeWithManifest:(NSDictionary *)manifest appDelegate:(TeaLeafAppDelegate *)appDelegate {
+
+    rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
     if([GameCenterManager isGameCenterAvailable])
     {
-        self.gameCenterManager= [[GameCenterManager alloc] init];
+        self.gameCenterManager = [[GameCenterManager alloc] init];
         [self.gameCenterManager authenticateLocalUser];
     }
 }
@@ -53,6 +56,11 @@
 
     if([GameCenterManager isGameCenterAvailable]) {
         [self.gameCenterManager submitAchievement: achievementID percentComplete: 100.0];
+    }
+}
+- (void) showGameCenter: (NSDictionary *)jsonObject {
+    if([GameCenterManager isGameCenterAvailable]) {
+        [self.gameCenterManager showGameCenter: rootViewController];
     }
 }
 
