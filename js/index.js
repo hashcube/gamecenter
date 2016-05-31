@@ -58,7 +58,7 @@ var Gamecenter = Class(function () {
 	};
 
 	this.login = function(next) {
-		return;
+		next(true);
 	};
 
        this.showGameCenter = function() {
