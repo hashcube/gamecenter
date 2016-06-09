@@ -32,7 +32,7 @@ var Gamecenter = Class(function () {
 	this.sendAchievement = function(achievementID, percentSolved) {
 		logger.log("{gamecenter} Sending of achievement");
 
-		var param = {"achievementID":achievementID,"percentSolved":percentSolved};
+		var param = {"achievementID":achievementID,"percentSolved":percentSolved || 100};
 
 		pluginSend("sendAchievement",param);
 	};

@@ -45,17 +45,23 @@ static UIViewController* rootViewController = nil;
 
 - (void) sendAchievement:(NSDictionary *)jsonObject {
     NSString *achievementID =  [NSString stringWithFormat:@""];
+    double percent = 100.0;
 
     for (id key in jsonObject) {
         id o = [jsonObject objectForKey:key];
-        if([key isEqual:@"achievementID"]){
+        if ([key isEqual:@"achievementID"]) {
             achievementID = o;
             continue;
         }
+
+        if ([key isEqual:@"percentSolved"]) {
+          percent = [o floatValue];
+          continue;
+        }
     }
 
-    if([GameCenterManager isGameCenterAvailable]) {
-        [self.gameCenterManager submitAchievement: achievementID percentComplete: 100.0];
+    if ([GameCenterManager isGameCenterAvailable]) {
+        [self.gameCenterManager submitAchievement: achievementID percentComplete: percent];
     }
 }
 - (void) showGameCenter: (NSDictionary *)jsonObject {
