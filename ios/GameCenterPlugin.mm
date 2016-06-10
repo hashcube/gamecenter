@@ -43,6 +43,10 @@ static UIViewController* rootViewController = nil;
 - (void) didBecomeActive:(NSDictionary *)jsonObject {
 }
 
+- (void) resetAchievements:(NSDictionary *)jsonObject {
+    [self.gameCenterManager resetAchievements];
+}
+
 - (void) sendAchievement:(NSDictionary *)jsonObject {
     NSString *achievementID =  [NSString stringWithFormat:@""];
     double percent = 100.0;

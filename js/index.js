@@ -29,6 +29,11 @@ var Gamecenter = Class(function () {
 		});
 	}
 
+	this.resetAchievements = function () {
+		logger.log("{gamecenter} Reseting achievement");
+		pluginSend("resetAchievements", {});
+	};
+
 	this.sendAchievement = function(achievementID, percentSolved) {
 		logger.log("{gamecenter} Sending of achievement");
 
