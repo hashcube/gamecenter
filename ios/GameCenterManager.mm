@@ -239,14 +239,10 @@ BOOL is_signed_in;
 
 -  (void) showGameCenter: (UIViewController*) rootViewController
 {
-    if(is_signed_in) {
-        GKGameCenterViewController* gameCenterController = [[GKGameCenterViewController alloc] init];
-        if (gameCenterController != nil) {
-            gameCenterController.gameCenterDelegate = (id)self;
-            [rootViewController presentViewController:gameCenterController animated:YES completion:nil];
-        }
-    } else {
-        [rootViewController presentViewController:rootViewController animated:YES completion:nil];
+    GKGameCenterViewController* gameCenterController = [[GKGameCenterViewController alloc] init];
+    if (gameCenterController != nil) {
+        gameCenterController.gameCenterDelegate = (id)self;
+        [rootViewController presentViewController:gameCenterController animated:YES completion:nil];
     }
 }
 
